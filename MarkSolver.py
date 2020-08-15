@@ -169,8 +169,8 @@ def marksolver( theboard, mapsizex, mapsizey ):
 	''' first round of expanding, before try to shoot the wumpus.'''
 	beforeshooting=expandbyrule(gamestate,mapsizex,mapsizey)
 	''' if gold already reached, just return true '''
-	if(checkgold(beforeshooting,mapsizex,mapsizey)): return true
-	if(checkglitter(beforeshooting,mapsizex,mapsizey)): return true
+	if(checkgold(beforeshooting,mapsizex,mapsizey)): return True
+	if(checkglitter(beforeshooting,mapsizex,mapsizey)): return True
 	'''shoot the wumpus down if it is possible'''
 	wnumber=countposwnum( beforeshooting, mapsizex,mapsizey)
 	'''only one possible place for wumpus'''
@@ -181,33 +181,33 @@ def marksolver( theboard, mapsizex, mapsizey ):
 		
 		for i in range(mapsizex):
 			for j in range(mapsizey):
-				if (beforeshooting[i][j].nw==false):
+				if (beforeshooting[i][j].nw==False):
 					x=i
 					y=j
 			
 		if beforeshooting[x][y].is_wumpus():
-			beforeshooting[x][y].nw=true
-			beforeshooting[x][y].np=true
+			beforeshooting[x][y].nw=True
+			beforeshooting[x][y].np=True
 			for a in range(mapsizex):
 				for b in range(mapsizey):
-					beforeshooting[a][b].stench=false
+					beforeshooting[a][b].stench=False
 				
 			
 		
 		else:
-			beforeshooting[x][y].nw=true
+			beforeshooting[x][y].nw=True
 		
 		beforeshooting[x][y].killw()
 		
 		aftershooting=expandbyrule(beforeshooting,mapsizex,mapsizey)
 		
-		if(checkgold(aftershooting,mapsizex,mapsizey)): return true
-		if(checkglitter(aftershooting,mapsizex,mapsizey)): return true
+		if(checkgold(aftershooting,mapsizex,mapsizey)): return True
+		if(checkglitter(aftershooting,mapsizex,mapsizey)): return True
 	
 	
 	
 	
-	return false
+	return False
 
 
 
@@ -223,7 +223,7 @@ The assembled main function which takes in a board and return the difficulty
 			3 extreme, which involve both shooting down the wumpus and glitter check
 '''
 
-def marksolver( theboard, mapsizex, mapsizey ):
+def eval( theboard, mapsizex, mapsizey ):
 	'''initialize the game'''
 	
 	gamestate=theboard.copy()
@@ -286,21 +286,21 @@ def marksolver( theboard, mapsizex, mapsizey ):
 		
 		for i in range(mapsizex):
 			for j in range(mapsizey):
-				if (beforeshooting[i][j].nw==false):
+				if (beforeshooting[i][j].nw==False):
 					x=i
 					y=j
 			
 		if beforeshooting[x][y].is_wumpus():
-			beforeshooting[x][y].nw=true
-			beforeshooting[x][y].np=true
+			beforeshooting[x][y].nw=True
+			beforeshooting[x][y].np=True
 			for a in range(mapsizex):
 				for b in range(mapsizey):
-					beforeshooting[a][b].stench=false
+					beforeshooting[a][b].stench=False
 				
 			
 		
 		else:
-			beforeshooting[x][y].nw=true
+			beforeshooting[x][y].nw=True
 		
 		beforeshooting[x][y].killw()
 		
@@ -310,3 +310,43 @@ def marksolver( theboard, mapsizex, mapsizey ):
 		if(checkglitter(aftershooting,mapsizex,mapsizey)): return 3
 	
 	return -1
+
+
+def maptrans(numap):
+	themap=list(list())
+	wallsizex=len(numap)
+	wallsizey=len(numap[0])
+	for i in range(wallsizex):
+		line=list()
+		for j in range(wallsizey):
+			if(numap[i][j]==0): line.append(Node(i,j,"e",wallsizex,wallsizey))
+			elif(numap[i][j]==1): line.append(Node(i,j,"p",wallsizex,wallsizey))
+			elif(numap[i][j]==2): line.append(Node(i,j,"w",wallsizex,wallsizey))
+			elif(numap[i][j]==3): line.append(Node(i,j,"g",wallsizex,wallsizey))
+			else: line.append(Node(i,j,"e",wallsizex,wallsizey))
+		
+		themap.append(line)
+	
+	
+	for i in range(wallsizex):		
+		for j in range(wallsizey):
+		
+			if(numap[i][j]==1) :
+				if(i+1<wallsizex): themap[i+1][j].breeze=True
+				if(j+1<wallsizey): themap[i][j+1].breeze=True
+				if(i-1>=0): themap[i-1][j].breeze=True
+				if(j-1>=0): themap[i][j-1].breeze=True
+			
+			if(numap[i][j]==2) :
+				if(i+1<wallsizex): themap[i+1][j].stench=True
+				if(j+1<wallsizey): themap[i][j+1].stench=True
+				if(i-1>=0): themap[i-1][j].stench=True
+				if(j-1>=0): themap[i][j-1].stench=True
+			
+			if(numap[i][j]==3) :
+				if(i+1<wallsizex): themap[i+1][j].glitter=True
+				if(j+1<wallsizey): themap[i][j+1].glitter=True
+				if(i-1>=0): themap[i-1][j].glitter=True
+				if(j-1>=0): themap[i][j-1].glitter=True
+		
+	return themap

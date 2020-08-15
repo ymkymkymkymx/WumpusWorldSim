@@ -1,10 +1,11 @@
 class Node:
-    def __init__(self, xcoord, ycoord, label, wall_size):
+    def __init__(self, xcoord, ycoord, label, wall_sizex,wall_sizey):
         self.xcoord = max(0, xcoord)
         self.ycoord = max(0, ycoord)
         self.label = label
         # min wall size is 4 so check that wall size is at least 4
-        self.wall_size = max(4, wall_size)
+        self.wall_sizex = max(4, wall_sizex)
+        self.wallsizey=max(4,wall_sizey)
         self.nw = False
         self.np = False
         self.ng = False
@@ -19,10 +20,10 @@ class Node:
     
     def is_start_spot(self):
         # the start spot is the spot in the lower left corner labeled with "s"
-        if (self.label == "s" and self.xcoord == (self.wall_size - 1) and self.ycoord == 0):
+        if (self.label == "s" and self.xcoord == (self.wall_sizex - 1) and self.ycoord == 0):
             return True
         # if the Node is in the lower left corner (the starting spot) but not labeled "s", change the label
-        if self.xcoord == (self.wall_size - 1) and self.ycoord == 0:
+        if self.xcoord == (self.wall_sizex - 1) and self.ycoord == 0:
             self.set_label("s") 
             return True
         # if the node fits neither of the above things then the node cannot be the starting spot
@@ -32,7 +33,7 @@ class Node:
     
     def next_to_right_wall(self):
         # if the node is next to the right wall, its y coordinate must be the farthest spot to the right
-        return self.ycoord == self.wall_size - 1
+        return self.ycoord == self.wall_sizey - 1
     
     def next_to_left_wall(self):
         # if node is next to left wall then its y coordinate would be 0
@@ -44,7 +45,7 @@ class Node:
     
     def next_to_lower_wall(self):
         # if node is next to the lower wall then its x coord must be the highest index
-        return self.xcoord == self.wall_size - 1
+        return self.xcoord == self.wall_sizex - 1
     
     def is_corner_spot(self):
         # A node is in a corner if it is next to a vertical wall AND a horizontal wall

@@ -223,7 +223,7 @@ The assembled main function which takes in a board and return the difficulty
 			3 extreme, which involve both shooting down the wumpus and glitter check
 '''
 
-def eval( theboard, mapsizex, mapsizey ):
+def evaluate( theboard, mapsizex, mapsizey ):
 	'''initialize the game'''
 	
 	gamestate=theboard.copy()

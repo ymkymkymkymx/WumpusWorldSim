@@ -100,3 +100,26 @@ if __name__ == "__main__":
     
     printgrid(findmap(4,4,3,3),4,4)
     printgrid(findmap(5,6,3,3),5,6)
+
+'''
+threadsnum = 1
+size = input("Enter the size:" )
+while ((not size.isdigit()) or (int(size) < 1)):
+	size = input("Invalid input. Please enter a positive integer size." )
+size = int(size)
+
+pits = input("Enter the number of pits:" )
+while ((not pits.isdigit()) or (int(pits) >= size * size - 6 )):
+	if (not pits.isdigit()):
+		pits = input("Invalid input. Please enter a positive integer number of pits." )
+else:
+	pits = input("Too many pits. Please enter a lower number.")
+
+pits = int(pits)
+
+diffy = input("Enter the size:" )
+while ((not (diffy.isdigit() or diffy == "-1") or (int(size) < 1)):
+	size = input("Invalid input. Please enter a positive integer size." )
+
+diffy = int(diffy)
+'''

@@ -102,24 +102,51 @@ if __name__ == "__main__":
     printgrid(findmap(5,6,3,3),5,6)
 
 '''
+#srand(int(clock()*10000)); #must import sys up on top
+#print(findmap(sizex,sizey,pits,diffy), sizex, sizey)
 threadsnum = 1
-size = input("Enter the size:" )
-while ((not size.isdigit()) or (int(size) < 1)):
-	size = input("Invalid input. Please enter a positive integer size." )
-size = int(size)
+sizex = input("Enter the horizontal board size:" )
+while ((not sizex.isdigit()) or (int(sizex) < 1)):
+	sizex = input("Invalid input. Please enter a positive integer horizontal size." )
+sizex = int(sizex)
+
+sizey = input("Enter the vertical board size:" )
+while ((not sizey.isdigit()) or (int(sizey) < 1)):
+	sizey = input("Invalid input. Please enter a positive integer vertical size." )
+sizey = int(sizey)
 
 pits = input("Enter the number of pits:" )
 while ((not pits.isdigit()) or (int(pits) >= size * size - 6 )):
 	if (not pits.isdigit()):
 		pits = input("Invalid input. Please enter a positive integer number of pits." )
-else:
-	pits = input("Too many pits. Please enter a lower number.")
+	else:
+		pits = input("Too many pits. Please enter a lower number.")
 
 pits = int(pits)
 
 diffy = input("Enter the size:" )
-while ((not (diffy.isdigit() or diffy == "-1") or (int(size) < 1)):
-	size = input("Invalid input. Please enter a positive integer size." )
+while ((not (diffy.isdigit()) or (int(diffy) < -1 or int(diffy) > 3)):
+	diffy = input("Invalid input. Please enter an integer from -1 to 3.")
 
 diffy = int(diffy)
+
+threadsnum = input("Enter 1-16 for the number of threads you want for the program to use:" )
+while ((not (threadsnum.isdigit()) or (int(threadsnum) < 1 or int(threadsnum) > 16)):
+	threadsnum = input("Invalid input. Please enter an integer between 1-16.")
+
+threadsnum = int(threadsnum)
+
+
 '''
+'''
+vector<thread> threads;
+	for(int t=0;t<threadsnum;t++){
+		threads.push_back(thread(findmap,t*t+1));
+	}
+	for(int t=0;t<threadsnum;t++){
+		threads[t].join();
+	}
+	cout<<"Found difficulty: "<<diffy<<endl;
+	printgrid(answer[0],size);
+'''
+      

@@ -94,8 +94,19 @@ def findmap(sizex,sizey,pits,diffy):
     return grid
 
 
-
-
+def tolistofset(themap,sizex,sizey):
+    start_invis_board = [[set() for j in range(sizey)] for i in range(sizex)]
+    for i in range(sizex):
+        for j in range(sizey):
+            if themap[i][j]==2:
+                start_invis_board[i][j].add("LiveWumpus")
+            if themap[i][j]==3:
+                start_invis_board[i][j].add("Gold")
+            if themap[i][j]==1:    
+                start_invis_board[i][j].add("Pit")
+    return start_invis_board    
+    
+    
 if __name__ == "__main__":
     
     printgrid(findmap(4,4,3,3),4,4)

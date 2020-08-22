@@ -1,8 +1,9 @@
 
+
 class Observer: 
 
-    def update(visible_board, robot_position, messages, hasArrow, hasGold, orientation):
-        """functtion(visible_board, robot_position, messages, hasArrow, hasGold) -> void"""
+    def update(self, visible_board, robot_position, messages, hasArrow, hasGold, orientation):
+        """function(visible_board, robot_position, messages, hasArrow, hasGold) -> void"""
 
 
         """
@@ -18,11 +19,16 @@ class Observer:
             hasArrow: boolean
 
             hasGold: boolean
-            
+
             orientation: [0,  1]  -> facing right
                          [0, -1]  -> facing left
                          [1,  0]  -> facing up
                          [-1, 0]  -> facing down
         """
+
+        print() 
+        for msg in messages: 
+            print(msg)
+        
         
         pass 

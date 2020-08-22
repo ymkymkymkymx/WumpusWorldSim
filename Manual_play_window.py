@@ -1,48 +1,13 @@
-import tkinter as tk
-import platform
-import os
+CELL_SIZE = 32
+from tkinter import *
 from PIL import Image, ImageTk
-CELL_SIZE = 32 # the pixel for a single square for play board
-
-ROOT_DIR = "."
-
-class Start_window:
-    def __init__(self, master):
-        self.master = master
-        self.frame = tk.Frame(self.master)
-        if platform.system() == "Darwin":  ### if its a Mac
-            self.button1 = tk.Button(self.frame, text='Manual Play', width=25, command=self.new_window1, highlightbackground='#3E4149')
-            self.button2 = tk.Button(self.frame, text='1 robot test', width=25, command=self.new_window2, highlightbackground='#3E4149')
-            self.button3 = tk.Button(self.frame, text='8 robots battle', width=25, command=self.new_window3, highlightbackground='#3E4149')
-        else:
-            self.button1 = tk.Button(self.frame, text='Manual Play', width=25, command=self.new_window1)
-            self.button2 = tk.Button(self.frame, text='1 robot test', width=25, command=self.new_window2)
-            self.button3 = tk.Button(self.frame, text='8 robots battle', width=25, command=self.new_window3)
-
-        self.button1.pack()
-        self.button2.pack()
-        self.button3.pack()
-        self.frame.pack()
-
-    def new_window1(self): # manual play button
-        self.temp_new = tk.Toplevel(self.master)
-        self.app = Manual_play_window(self.temp_new)
-
-    def new_window2(self): # 1 robot test button
-        self.temp_new = tk.Toplevel(self.master)
-        self.app = One_robot_window(self.temp_new)
-
-    def new_window3(self): # 8 robot battle button
-        self.temp_new = tk.Toplevel(self.master)
-        self.app = Robot_battle_window(self.temp_new)
-
-    def close_windows(self):
-        self.master.destory()
+import os
 
 class Manual_play_window:
     def __init__(self, master):
         self.master = master
-        self.frame = tk.Frame(self.master)
+        self.frame = Frame(self.master)
+        # self.cell_size = CELL_SIZE
 
         self.rows = 10
         self.columns = 10
@@ -54,13 +19,17 @@ class Manual_play_window:
         canvas_width = self.columns * self.size + 500
         canvas_height = self.rows * self.size + 500
 
-        self.canvas = tk.Canvas(self.master, borderwidth=0, highlightthickness=0,
+        self.canvas = Canvas(self.master, borderwidth=0, highlightthickness=0,
                                 width=canvas_width, height=canvas_height, background="bisque")
         self.canvas.pack(side="top", fill="both", expand=True, padx=2, pady=2)
 
         # this binding will cause a refresh if the user interactively
         # changes the window size
         self.canvas.bind("<Configure>", self.refresh)
+
+        temp_img = ImageTk.PhotoImage(Image.open('./test.png'))
+        self.pieces["test"] = temp_img
+
         self.frame.pack()
 
         # img_right = ImageTk.PhotoImage(Image.open(os.path.join(ROOT_DIR,"img_src","btn_right.png")).convert("RGB").resize((20,20)))
@@ -71,7 +40,8 @@ class Manual_play_window:
         # btn_right.place(x=50, y=self.rows * self.size+100)
 
         # btn_test = tk.Button(self.master, text= "test", command = self.move_right()).place(x=50, y=self.rows * self.size+100)
-
+        # temp_img = ImageTk.PhotoImage(Image.open(os.path.join(".","img_src","btn_right.png")))
+        # btn_test = Button(self.master, image = temp_img, command=self.move_right()).place(x=50, y=self.rows * self.size+100)
 
     def move_right(self):
         print("hit right")
@@ -106,6 +76,8 @@ class Manual_play_window:
                 color = self.color1 if color == self.color2 else self.color2
         for name in self.pieces:
             self.placepiece(name, self.pieces[name][0], self.pieces[name][1])
+            # ImageTk.PhotoImage(Image.open('./test.png'))
+
         self.canvas.tag_raise("piece")
         self.canvas.tag_lower("square")
 
@@ -113,23 +85,4 @@ class Manual_play_window:
         return NotImplementedError
 
     def close_windows(self):
-        self.master.destory()
-
-class One_robot_window:
-    def __init__(self, master):
-        return NotImplementedError
-    def close_windows(self):
-        self.master.destory()
-
-class Robot_battle_window:
-    def __init__(self, master):
-        return NotImplementedError
-    def close_windows(self):
-        self.master.destory()
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = Start_window(root)
-
-    root.mainloop()
+        self.master.destroy()

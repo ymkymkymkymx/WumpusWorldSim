@@ -34,6 +34,8 @@ def init(data):
 def redrawAll(canvas, data):
     if (data.curState == "home"):
         homeScreenRedraw(canvas, data)
+    if (data.curState == "help"):
+        helpScreenRedraw(canvas, data)
     if (data.curState == "input"):
         inputScreenRedraw(canvas, data)
     if (data.curState == "playType"):
@@ -43,6 +45,8 @@ def redrawAll(canvas, data):
 def mousePressed(event, data):
     if (data.curState == "home"):
         homeMousePressed(event, data)
+    if (data.curState == "help"):
+        helpMousePressed(event, data)
     if (data.curState == "input"):
         inputMousePressed(event,data)
     if (data.curState == "playType"):
@@ -70,29 +74,51 @@ def homeScreenRedraw(canvas, data):
     canvas.create_rectangle(370, 540, 640, 640, fill = "white", width = 5, outline = "#a79eff")
     canvas.create_text(500, 590, text = "Help", font = "Helvetica 26 bold italic")
 
-def difficultyMousePressed(event,data):
+def helpMousePressed(event, data):
     mouseX = event.x
     mouseY = event.y
 
-    if (350 < mouseX < 650 and 200 < mouseY < 300):
-        data.curState = data.states[3]
-    if (350 < mouseX < 650 and 400 < mouseY < 500):
-        data.curState = data.states[4]
-    if (350 < mouseX < 650 and 600 < mouseY < 600):
-        data.curState = data.states[5]
+    if(0 < mouseX < 150 and 600 < mouseY < 700): #click Help
+        data.curState = data.states[0]
 
-def difficultyScreenRedraw(canvas, data):
-    canvas.create_rectangle(0,0, data.width,data.height, fill ="white", width = 0)
-    canvas.create_text(500, 100, text = "Select Your Difficulty Level", font = "Helvetica 40 bold italic")
-    canvas.create_rectangle(350, 200, 650, 300, fill = "white", width = 5)
-    canvas.create_text(500, 250, text = "Easy", font = "Helvetica 35 bold italic")
-    canvas.create_rectangle(350, 400, 650, 500, fill = "white", width = 5)
-    canvas.create_text(500, 450, text = "Medium", font = "Helvetica 35 bold italic")
-    canvas.create_rectangle(350, 600, 650, 700, fill = "white", width = 5)
-    canvas.create_text(500, 650, text = "Hard", font = "Helvetica 35 bold italic")
+def helpScreenRedraw(canvas, data):
+    canvas.create_rectangle(0,0, data.width,data.height, fill ="light blue", width = 0)
+    canvas.create_text(500, 20, text = "Welcome to the Wumpus World Simulator.", font = "Helvetica 26 bold italic")
+    canvas.create_text(500, 80, text = "To use this simulator, please select what difficulty you'd like,", font = "Helvetica 18 bold")
+    canvas.create_text(500, 110, text = "the dimensions of the board you'd like, and the number of pits  ", font = "Helvetica 18 bold")
+    canvas.create_text(500, 140, text = "you'd like the board to have. ", font = "Helvetica 18 bold")
+    canvas.create_text(500, 240, text = "After clicking the \"Submit\" button, select the mode you'd like -", font = "Helvetica 18 bold")
+    canvas.create_text(500, 270, text = "Manual Play, 1 robot test, or 8 robot battle.", font = "Helvetica 18 bold")
+    canvas.create_text(500, 370, text = "Enjoy!", font = "Helvetica 18 bold")
+    canvas.create_text(500, 570, text = "Wumpus World Team", font = "Helvetica 14 bold")
+    canvas.create_rectangle(0, 600, 150, 700, fill = "white", width = 5)
+    canvas.create_text(75, 650, text = "Back", font = "Helvetica 35 bold italic")
+
+# def difficultyMousePressed(event,data):
+#     mouseX = event.x
+#     mouseY = event.y
+#
+#     if (350 < mouseX < 650 and 200 < mouseY < 300):
+#         data.curState = data.states[3]
+#     if (350 < mouseX < 650 and 400 < mouseY < 500):
+#         data.curState = data.states[4]
+#     if (350 < mouseX < 650 and 600 < mouseY < 600):
+#         data.curState = data.states[5]
+#
+# def difficultyScreenRedraw(canvas, data):
+#     canvas.create_rectangle(0,0, data.width,data.height, fill ="white", width = 0)
+#     canvas.create_text(500, 100, text = "Select Your Difficulty Level", font = "Helvetica 40 bold italic")
+#     canvas.create_rectangle(350, 200, 650, 300, fill = "white", width = 5)
+#     canvas.create_text(500, 250, text = "Easy", font = "Helvetica 35 bold italic")
+#     canvas.create_rectangle(350, 400, 650, 500, fill = "white", width = 5)
+#     canvas.create_text(500, 450, text = "Medium", font = "Helvetica 35 bold italic")
+#     canvas.create_rectangle(350, 600, 650, 700, fill = "white", width = 5)
+#     canvas.create_text(500, 650, text = "Hard", font = "Helvetica 35 bold italic")
 def inputMousePressed(event, data):
     mouseX = event.x
     mouseY = event.y
+    if (50 < mouseX < 150 and 600 < mouseY < 650): #Back Button
+        data.curState = data.states[0]
     #Clicking a difficulty level
     if (80 <= mouseY <= 155):
         if (225 <= mouseX <= 375):
@@ -162,8 +188,6 @@ def inputMousePressed(event, data):
                 data.curState = data.states[3]
             else:
                 data.error = 1
-    elif (50 < mouseX < 150 and 600 < mouseY < 650): #Back Button
-        data.curState = data.states[0]
 
 
 

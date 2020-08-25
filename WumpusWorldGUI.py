@@ -29,6 +29,7 @@ def init(data):
     data.playType = ""
     data.gridX = 0
     data.gridY = 0
+    data.error = 0
 
 def redrawAll(canvas, data):
     if (data.curState == "home"):
@@ -157,7 +158,13 @@ def inputMousePressed(event, data):
             data.gridY = 6
     elif (600 <= mouseY <= 650):
         if (450 <= mouseX <= 555):
-            data.curState = data.states[3]
+            if (data.difficulty != "  " and data.pits != "  " and data.gridSize != "  "):
+                data.curState = data.states[3]
+            else:
+                data.error = 1
+    elif (50 < mouseX < 150 and 600 < mouseY < 650): #Back Button
+        data.curState = data.states[0]
+
 
 
 def inputScreenRedraw(canvas, data):
@@ -213,8 +220,14 @@ def inputScreenRedraw(canvas, data):
     canvas.create_rectangle(450,600,555,650, fill="deep sky blue", width=5)
     canvas.create_text(500, 625,text="Submit", font = "Helvetica 20 bold italic")
 
+    #Back Button
+    canvas.create_rectangle(50, 600, 150, 650, fill = "white", width = 5)
+    canvas.create_text(100, 625, text = "Back", font = "Helvetica 20 bold italic")
+
     selectionText= "Selected: Difficulty - {0}  Pits - {1}  Size - {2}".format(data.difficulty, data.pits, data.gridSize)
     canvas.create_text(500,700, text=selectionText, font="Helvetica 20 bold italic")
+    if (data.error):
+        canvas.create_text(500,750, text="Please select one from all choices", font="Helvetica 20 bold italic")
 
 
 def new_window1(canvas, data): # manual play button
@@ -223,11 +236,11 @@ def new_window1(canvas, data): # manual play button
 
 def new_window2(canvas): # 1 robot test button
     temp_new = Toplevel(canvas)
-    app = One_robot_window(temp_new)
+    app = One_robot_window(temp_new, data)
 
 def new_window3(canvas): # 8 robot battle button
     temp_new = Toplevel(canvas)
-    app = Robot_battle_window(temp_new)
+    app = Robot_battle_window(temp_new, data)
 
 def close_windows(canvas):
     canvas.destroy()
@@ -235,12 +248,16 @@ def close_windows(canvas):
 def playTypeMousePressed(event, data):
     mouseX = event.x
     mouseY = event.y
-    if (350 < mouseX < 650 and 200 < mouseY < 300):
+    if (330 < mouseX < 670 and 200 < mouseY < 300):
         data.playType = "manual"
-    if (350 < mouseX < 650 and 400 < mouseY < 500):
+    elif (330 < mouseX < 670 and 400 < mouseY < 500):
         data.playType = "single"
-    if (350 < mouseX < 650 and 600 < mouseY < 600):
+    elif (330 < mouseX < 670 and 600 < mouseY < 600):
         data.playType = "battle"
+    elif (50 < mouseX < 150 and 600 < mouseY < 650): #Back Button
+        data.curState = data.states[2]
+    else:
+        data.playType = "none"
 def playTypeScreenRedraw(canvas, data):
     canvas.create_rectangle(0,0, data.width,data.height, fill ="light blue", width = 0)
     canvas.create_text(500, 100, text = "Select Your Play Type", font = "Helvetica 40 bold italic")
@@ -250,6 +267,10 @@ def playTypeScreenRedraw(canvas, data):
     canvas.create_text(500, 450, text = "1 Robot Test", font = "Helvetica 35 bold italic")
     canvas.create_rectangle(330, 600, 670, 700, fill = "white", width = 5)
     canvas.create_text(500, 650, text = "8 Robot Battle", font = "Helvetica 35 bold italic")
+    #Back Button
+    canvas.create_rectangle(50, 600, 150, 650, fill = "white", width = 5)
+    canvas.create_text(100, 625, text = "Back", font = "Helvetica 20 bold italic")
+
     if(data.playType == "manual") :
         new_window1(canvas, data)
     elif (data.playType == "single"):

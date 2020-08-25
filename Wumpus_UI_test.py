@@ -26,7 +26,7 @@ class Start_window:
 
     def new_window1(self): # manual play button
         self.temp_new = tk.Toplevel(self.master)
-        self.app = Manual_play_window(self.temp_new)
+        self.app = Manual_play_window(self.temp_new, data)
 
     def new_window2(self): # 1 robot test button
         self.temp_new = tk.Toplevel(self.master)
@@ -147,11 +147,33 @@ class Robot_battle_window:
     def close_windows(self):
         self.master.destory()
 
-
+def init(data):
+    data.states = ["home", "help", "input", "playType"]
+    data.curState = data.states[0]
+    data.width = 1000
+    data.height = 800
+    data.difficulty = "EASY"
+    data.pits = "1"
+    data.gridSize = "8x8"
+    data.playType = ""
+    data.gridX = 3
+    data.gridY = 7
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = Manual_play_window(root)
-    # app = Start_window(root)
+    root.title("Chess")
 
+
+    class Struct(object): pass
+    data = Struct()
+    init(data)
+    gui = Manual_play_window(root, data)
     root.mainloop()
+
+
+# if __name__ == "__main__":
+#     root = tk.Tk()
+#     app = Manual_play_window(root)
+#     # app = Start_window(root)
+#
+#     root.mainloop()

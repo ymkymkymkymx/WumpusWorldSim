@@ -217,9 +217,9 @@ def inputScreenRedraw(canvas, data):
     canvas.create_text(500,700, text=selectionText, font="Helvetica 20 bold italic")
 
 
-def new_window1(canvas): # manual play button
+def new_window1(canvas, data): # manual play button
     temp_new = Toplevel(canvas)
-    app = Manual_play_window(temp_new)
+    app = Manual_play_window(temp_new, data)
 
 def new_window2(canvas): # 1 robot test button
     temp_new = Toplevel(canvas)
@@ -251,7 +251,7 @@ def playTypeScreenRedraw(canvas, data):
     canvas.create_rectangle(330, 600, 670, 700, fill = "white", width = 5)
     canvas.create_text(500, 650, text = "8 Robot Battle", font = "Helvetica 35 bold italic")
     if(data.playType == "manual") :
-        new_window1(canvas)
+        new_window1(canvas, data)
     elif (data.playType == "single"):
         new_window2(canvas)
     elif (data.playType == "battle"):

@@ -1,7 +1,8 @@
 
 
-class Observer: 
-
+class Observer:
+    history = []
+    Fail = False
     def update(self, visible_board, robot_position, messages, hasArrow, hasGold, orientation):
         """function(visible_board, robot_position, messages, hasArrow, hasGold) -> void"""
 
@@ -26,9 +27,13 @@ class Observer:
                          [-1, 0]  -> facing down
         """
 
-        print() 
+        print()
+
         for msg in messages: 
             print(msg)
+            self.history = messages
+            if msg == "FAIL":
+                self.Fail = True
         
         
         pass 

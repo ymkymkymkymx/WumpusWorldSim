@@ -28,14 +28,14 @@ def main() :
                     print("here!",end=" ")
                 else:
                     print("{}".format(g1.visible_board[sizex-i-1][j].difference({}).pop()), end=" ")
-            print("")        
+            print("")
         nextMove = input("Next Move: ")
         if nextMove == "move_up":
             g1.moveRobotUp()
         elif nextMove == "move_down":
             g1.moveRobotDown()
-        elif nextMove == "move_right":
-            g1.moveRobotRight()
+        # elif nextMove == "move_right":
+        #     g1.moveRobotRight()
         elif nextMove == "move_left":
             g1.moveRobotLeft()
         elif nextMove == "move_right":

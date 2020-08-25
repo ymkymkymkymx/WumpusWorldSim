@@ -1,4 +1,4 @@
-from observer import Observer
+# from observer import Observer
 
 """
     instantiate Game with: 
@@ -67,6 +67,7 @@ class Game :
 
     def startGame(self, start_board):
         self.resetGame(start_board) 
+        self.broadcastStateOnMove()
 
 
     def broadcastStateOnMove(self):

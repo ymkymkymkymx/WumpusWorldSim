@@ -1,0 +1,18 @@
+This directory contains an example of how to import the student's code dynamically
+and use it with our own simulation environment. 
+
+1. main.py contains a basic example of how to load the user's class
+
+2. testexe.py is the example class that main.py uses for demonstration purposes. 
+    The user has to manually enter the path of this file. It is not imported 
+    explicitly in main.py. 
+
+3. testagent.py contains an extremely simplified version of what the student's 
+    solver must look like. The student's solver must contain a def nextMove(self) function
+    that returns a string. 
+
+4. testgame.py is an example of the testagent.py and the simulator/game.py class working together. 
+    We have written an observer object that matches the api declared in simulator/observer.py, and 
+    we are using it to pass information from our simulator class. We have also added a 
+    def getLatestMove(self) function so that we can get the latest move from the student's 
+    Agent. 

@@ -35,6 +35,7 @@ class Game :
         self.robot_position = [0, 0]
         self.hasArrow = True 
         self.foundGold = False  
+        self.notifyObservers( self.visible_board, self.robot_position, "", self.hasArrow, self.foundGold, [0,1])
     
 
     def startGame(self, start_board):

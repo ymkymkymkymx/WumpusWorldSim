@@ -4,6 +4,12 @@ class Observer:
     history = []
     Fail = False
     def update(self, visible_board, robot_position, messages, hasArrow, hasGold, orientation):
+        self.visible_board=visible_board
+        self.robot_position=robot_position
+        self.messages=messages
+        self.hasArrow=hasArrow
+        self.hasGold=hasGold
+        self.orientation=orientation
         """function(visible_board, robot_position, messages, hasArrow, hasGold) -> void"""
 
 
@@ -37,3 +43,5 @@ class Observer:
         
         
         pass 
+    def currentstate(self):
+        return (self.visible_board, self.robot_position, self.messages, self.hasArrow, self.hasGold, self.orientation)

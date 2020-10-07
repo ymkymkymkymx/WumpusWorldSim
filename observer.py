@@ -4,7 +4,7 @@ class Observer:
     history = []
     Fail = False
     def update(self, visible_board, robot_position, messages, hasArrow, hasGold, orientation):
-        self.visible_board=visible_board
+        self.visible_board=visible_board.copy()
         self.robot_position=robot_position
         self.messages=messages
         self.hasArrow=hasArrow

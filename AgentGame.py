@@ -46,7 +46,7 @@ class AgentGame:
                     print("{}".format(g1.visible_board[sizex-i-1][j].difference({}).pop()), end=" ")
             print("")
             
-        nextMove = self.agent.predict(self.ob.currentstate())
+        nextMove = self.agent.move(self.ob.currentstate())
         if nextMove == "move_up":
             g1.moveRobotUp()
         elif nextMove == "move_down":

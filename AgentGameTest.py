@@ -13,74 +13,47 @@ if agentnumber>0:
     sys.path.append(fname)
     cmd="import "+agentname+" as t1"
     exec(cmd)
-    agent=t1.Agent()
+    agent=t1.Agent(sizex,sizey)
     game1=AgentGame(sizex,sizey,pits,diffy,agent,o1=Observer())
     games.append(game1)
 if agentnumber>1:
     fname=input("Enter the folder name: ") ## test case in this repo: agents 
     agentname=input("Enter the agent name: ") ## test case in this repo: agent1 or agent (please remove .py)
     sys.path.append(fname)
-    cmd="import "+agentname+" as t1"
+    cmd="import "+agentname+" as t2"
     exec(cmd)
-    agent=t1.Agent()    
-    game2=AgentGame(sizex,sizey,pits,diffy,agent,o1=Observer())
+    agent2=t2.Agent(sizex,sizey)    
+    game2=AgentGame(sizex,sizey,pits,diffy,agent2,o1=Observer())
     games.append(game2)
 if agentnumber>2:
     fname=input("Enter the folder name: ") ## test case in this repo: agents 
     agentname=input("Enter the agent name: ") ## test case in this repo: agent1 or agent (please remove .py)
     sys.path.append(fname)
-    cmd="import "+agentname+" as t1"
+    cmd="import "+agentname+" as t3"
     exec(cmd)
-    agent=t1.Agent()    
-    game3=AgentGame(sizex,sizey,pits,diffy,agent,o1=Observer())
+    agent3=t3.Agent(sizex,sizey)    
+    game3=AgentGame(sizex,sizey,pits,diffy,agent3,o1=Observer())
     games.append(game3)
 if agentnumber>3:
     fname=input("Enter the folder name: ") ## test case in this repo: agents 
     agentname=input("Enter the agent name: ") ## test case in this repo: agent1 or agent (please remove .py)
     sys.path.append(fname)
-    cmd="import "+agentname+" as t1"
+    cmd="import "+agentname+" as t4"
     exec(cmd)
-    agent=t1.Agent()    
-    game4=AgentGame(sizex,sizey,pits,diffy,agent,o1=Observer())
+    agent4=t4.Agent(sizex,sizey)    
+    game4=AgentGame(sizex,sizey,pits,diffy,agent4,o1=Observer())
     games.append(game4)
 if agentnumber>4:
     fname=input("Enter the folder name: ") ## test case in this repo: agents 
     agentname=input("Enter the agent name: ") ## test case in this repo: agent1 or agent (please remove .py)
     sys.path.append(fname)
-    cmd="import "+agentname+" as t1"
+    cmd="import "+agentname+" as t5"
     exec(cmd)
-    agent=t1.Agent()    
-    game5=AgentGame(sizex,sizey,pits,diffy,agent,o1=Observer())
+    agent5=t5.Agent(sizex,sizey)    
+    game5=AgentGame(sizex,sizey,pits,diffy,agent5,o1=Observer())
     games.append(game5)
     
-if agentnumber>5:
-    fname=input("Enter the folder name: ") ## test case in this repo: agents 
-    agentname=input("Enter the agent name: ") ## test case in this repo: agent1 or agent (please remove .py)
-    sys.path.append(fname)
-    cmd="import "+agentname+" as t1"
-    exec(cmd)
-    agent=t1.Agent()    
-    game6=AgentGame(sizex,sizey,pits,diffy,agent,o1=Observer())
-    games.append(game6)
-if agentnumber>6:
-    fname=input("Enter the folder name: ") ## test case in this repo: agents 
-    agentname=input("Enter the agent name: ") ## test case in this repo: agent1 or agent (please remove .py)
-    sys.path.append(fname)
-    cmd="import "+agentname+" as t1"
-    exec(cmd)
-    agent=t1.Agent()    
-    game7=AgentGame(sizex,sizey,pits,diffy,agent,o1=Observer())
-    games.append(game7)
-if agentnumber>7:
-    fname=input("Enter the folder name: ") ## test case in this repo: agents
-    agentname=input("Enter the agent name: ") ## test case in this repo: agent1 or agent (please remove .py)
-    sys.path.append(fname)
-    cmd="import "+agentname+" as t1"
-    exec(cmd)
-    agent=t1.Agent()    
-    game8=AgentGame(sizex,sizey,pits,diffy,agent,o1=Observer())
-    games.append(game8)
-    agentnumber=8
+
 
 for i in range(100):
     for game in games:

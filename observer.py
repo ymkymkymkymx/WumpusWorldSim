@@ -44,4 +44,4 @@ class Observer:
         
         pass 
     def currentstate(self):
-        return (self.visible_board, self.robot_position, self.messages, self.hasArrow, self.hasGold, self.orientation)
+        return (self.messages, self.hasArrow, self.hasGold, self.orientation)

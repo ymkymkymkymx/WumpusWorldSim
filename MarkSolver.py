@@ -14,6 +14,7 @@ def checkglitter(gamestate, mapsizex, mapsizey):
 		for j in range(mapsizey):
 			if(gamestate[i][j].ng == False):
 				count = count + 1
+				
 			if(gamestate[i][j].is_gold()):
 				if(i+1<mapsizex and gamestate[i+1][j].visited):
 					goldnear = True
@@ -23,6 +24,7 @@ def checkglitter(gamestate, mapsizex, mapsizey):
 					goldnear = True
 				if(j-1>=0 and gamestate[i][j-1].visited):
 					goldnear = True
+					
 	if(goldnear and count==1):
 		return True
 	return False
@@ -98,21 +100,21 @@ def expandbyrule(gamestate, mapsizex, mapsizey):
 						if(j-1>=0):
 							gamestate[i][j-1].nw=True
 						
-				if(gamestate[i][j].glitter):
-					for x in range(mapsizex):
-						for y in range(mapsizey):
-							if(not ((x==i+1 and y==j) or (x==i-1 and y==j) or (x==i and y==j+1) or (x==i and y==j-1))):
-								gamestate[x][y].ng=True
-								
-				else:
-					if(i+1<mapsizex):
-						gamestate[i+1][j].ng=True
-					if(j+1<mapsizey):
-						gamestate[i][j+1].ng=True
-					if(i-1>=0):
-						gamestate[i-1][j].ng=True
-					if(j-1>=0):
-						gamestate[i][j-1].ng=True
+					if(gamestate[i][j].glitter):
+						for x in range(mapsizex):
+							for y in range(mapsizey):							
+								if(not ((x==i+1 and y==j) or (x==i-1 and y==j) or (x==i and y==j+1) or (x==i and y==j-1))):
+									gamestate[x][y].ng=True
+									
+					else:
+						if(i+1<mapsizex):
+							gamestate[i+1][j].ng=True
+						if(j+1<mapsizey):
+							gamestate[i][j+1].ng=True
+						if(i-1>=0):
+							gamestate[i-1][j].ng=True
+						if(j-1>=0):
+							gamestate[i][j-1].ng=True
 
 					
 	return gamestate

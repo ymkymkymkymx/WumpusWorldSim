@@ -62,3 +62,7 @@ if True:
     print("Should be true:")
     if(marksolver(maptrans(map12),4,4)): print("true")
     else: print("false")
+    
+    map13=[[0,0,0,0],[0,0,1,0],[1,2,3,0],[1,0,0,0]]
+    if(marksolver(maptrans(map13),4,4)): print("true")
+    else: print("false")    

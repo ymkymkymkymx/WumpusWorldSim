@@ -1,12 +1,13 @@
 from game import Game 
 from observer import Observer
-
-
+import signal
+import time
 from generatorv3 import *
 '''
 An example of how to combine generatorv3 with game
 '''
-
+def handle(signum,frame):
+    raise RuntimeError
 class AgentGame:
     def __init__(self,sizex,sizey,pits,diffy,agent,o1=Observer()):
         self.agent= agent
@@ -45,8 +46,15 @@ class AgentGame:
                 else:
                     print("{}".format(g1.visible_board[sizex-i-1][j].difference({}).pop()), end=" ")
             print("")
+        try:
+        
+            nextMove = self.agent.move(self.ob.currentstate())
             
-        nextMove = self.agent.move(self.ob.currentstate())
+        except Exception as e:
+            print(e)
+            print("Robot ran out of time")
+            nextMove=''
+
         if nextMove == "move_up":
             g1.moveRobotUp()
         elif nextMove == "move_down":

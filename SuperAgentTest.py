@@ -1,10 +1,10 @@
 from observer import Observer
 from AgentGame import *
 import sys
-sizex= 4
-sizey= 4
-pits= 3
-diffy= 0
+sizex= 6
+sizey= 6
+pits= 2
+diffy= 3
 agentnumber=1
 games=[]
 if agentnumber>0:
@@ -20,6 +20,6 @@ if agentnumber>0:
 
 
 
-for i in range(100):
+for i in range(1000):
     for game in games:
         game.step()

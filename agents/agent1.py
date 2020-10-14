@@ -20,4 +20,5 @@ class Agent:
     def move(self,state):
         ##TODO: Implement your algorithm here
         print("hi")
+        raise ReferenceError
         return "move_up"

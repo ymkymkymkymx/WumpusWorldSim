@@ -206,11 +206,16 @@ class Agent:
      
     def checkgold(self):  
         count=0
+        goldnear=False
         for i in range(self.sizex):
             for j in range(self.sizey):
                 if(self.board[i][j].ng==False):
                     count+=1
-        if count==1:
+                    a,b=self.checkvisitedaround(i,j)
+                    if a!=-1:
+                        goldnear=True
+                    
+        if count==1 and goldnear:
             return True
         else:
             return False 

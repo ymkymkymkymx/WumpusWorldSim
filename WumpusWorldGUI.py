@@ -42,7 +42,7 @@ def redrawAll(canvas, data):
         playTypeScreenRedraw(canvas, data)
 
 
-def mousePressed(event, data):
+def mousePressed(event, data, canvas):
     if (data.curState == "home"):
         homeMousePressed(event, data)
     if (data.curState == "help"):
@@ -53,6 +53,8 @@ def mousePressed(event, data):
         playTypeMousePressed(event, data)
     #Add a back button
 
+def highLigtClick(canvas, data):
+    return
 
 def homeMousePressed(event, data):
     mouseX = event.x
@@ -250,6 +252,72 @@ def inputScreenRedraw(canvas, data):
 
     selectionText= "Selected: Difficulty - {0}  Pits - {1}  Size - {2}".format(data.difficulty, data.pits, data.gridSize)
     canvas.create_text(500,700, text=selectionText, font="Helvetica 20 bold italic")
+    if data.difficulty == "EASY":
+        canvas.create_rectangle(225, 80, 375, 155, fill="deep sky blue", width=5)
+        canvas.create_text(300, 110, text="Easy", font="Helvetica 25 bold italic")
+    if data.difficulty == "MEDIUM":
+        canvas.create_rectangle(425, 80, 575, 155, fill="deep sky blue", width=5)  # medium
+        canvas.create_text(500, 110, text="Medium", font="Helvetica 25 bold italic")
+    if data.difficulty == "HARD":
+        canvas.create_rectangle(625, 80, 775, 155, fill="deep sky blue", width=5)  # hard
+        canvas.create_text(700, 110, text="Hard", font="Helvetica 25 bold italic")
+    if data.pits == "1":
+        canvas.create_rectangle(270,240,330,300, fill="deep sky blue", width=5)
+        canvas.create_text(300, 270, text = "1", font = "Helvetica 25 bold italic")
+    if data.pits == "2":
+        canvas.create_rectangle(370,240,430,300, fill="deep sky blue", width=5)
+        canvas.create_text(400, 270, text = "2", font = "Helvetica 25 bold italic")
+    if data.pits == "3":
+        canvas.create_rectangle(470,240,530,300, fill="deep sky blue", width=5)
+        canvas.create_text(500, 270, text = "3", font = "Helvetica 25 bold italic")
+    if data.pits == "4":
+        canvas.create_rectangle(570,240,630,300, fill="deep sky blue", width=5)
+        canvas.create_text(600, 270, text = "4", font = "Helvetica 25 bold italic")
+    if data.pits == "5":
+        canvas.create_rectangle(670,240,730,300, fill="deep sky blue", width=5)
+        canvas.create_text(700, 270, text = "5", font = "Helvetica 25 bold italic")
+
+    if data.gridSize == "3x3":
+        canvas.create_rectangle(270, 390, 330, 450, fill="deep sky blue", width=5)
+        canvas.create_text(300, 420, text="3x3", font="Helvetica 20 bold italic")
+    if data.gridSize == "3x4":
+
+        canvas.create_rectangle(370, 390, 430, 450, fill="deep sky blue", width=5)
+        canvas.create_text(400, 420, text="3x4", font="Helvetica 20 bold italic")
+    if data.gridSize == "3x5":
+        canvas.create_rectangle(470, 390, 530, 450, fill="deep sky blue", width=5)
+        canvas.create_text(500, 420, text="3x5", font="Helvetica 20 bold italic")
+    if data.gridSize == "3x6":
+
+        canvas.create_rectangle(570, 390, 630, 450, fill="deep sky blue", width=5)
+        canvas.create_text(600, 420, text="3x6", font="Helvetica 20 bold italic")
+    if data.gridSize == "4x4":
+
+        canvas.create_rectangle(670, 390, 730, 450, fill="deep sky blue", width=5)
+        canvas.create_text(700, 420, text="4x4", font="Helvetica 20 bold italic")
+
+        # Second Row
+    if data.gridSize == "4x5":
+
+        canvas.create_rectangle(270, 490, 330, 550, fill="deep sky blue", width=5)
+        canvas.create_text(300, 520, text="4x5", font="Helvetica 20 bold italic")
+    if data.gridSize == "4x6":
+
+        canvas.create_rectangle(370, 490, 430, 550, fill="deep sky blue", width=5)
+        canvas.create_text(400, 520, text="4x6", font="Helvetica 20 bold italic")
+    if data.gridSize == "5x5":
+
+        canvas.create_rectangle(470, 490, 530, 550, fill="deep sky blue", width=5)
+        canvas.create_text(500, 520, text="5x5", font="Helvetica 20 bold italic")
+    if data.gridSize == "5x6":
+
+        canvas.create_rectangle(570, 490, 630, 550, fill="deep sky blue", width=5)
+        canvas.create_text(600, 520, text="5x6", font="Helvetica 20 bold italic")
+    if data.gridSize == "6x6":
+
+        canvas.create_rectangle(670, 490, 730, 550, fill="deep sky blue", width=5)
+        canvas.create_text(700, 520, text="6x6", font="Helvetica 20 bold italic")
+
     if (data.error):
         canvas.create_text(500,750, text="Please select one from all choices", font="Helvetica 20 bold italic")
 
@@ -309,7 +377,7 @@ def run():
         redrawAll(canvas, data)
         canvas.update()
     def mousePressedWrapper(event, canvas, data):
-        mousePressed(event, data)
+        mousePressed(event, data, canvas)
         redrawAllWrapper(canvas, data)
 
     class Struct(object): pass

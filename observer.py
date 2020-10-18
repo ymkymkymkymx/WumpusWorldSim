@@ -44,4 +44,4 @@ class Observer:
         
         pass 
     def currentstate(self):
-        return (self.messages,  self.hasGold)
+        return (self.messages,0)

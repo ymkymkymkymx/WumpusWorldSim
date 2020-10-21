@@ -7,7 +7,7 @@ from pygame.sprite import RenderUpdates
 from tkinter import *
 from Manual_play_window import *
 from battle import *
-from single import *
+##from single import *
 from game import Game
 from observer import Observer
 from generatorv3 import *

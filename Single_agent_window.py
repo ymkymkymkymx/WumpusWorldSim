@@ -131,19 +131,20 @@ class Single_agent_window:
         self.data = data
         self.game=None
         self.aggame = self.init_game_with_data(data)
+        self.steps=0
         # print(data.gridX)  #todo parse data
 
         self.chessboard = Board()
         self.parent = parent
         # Adding Top Menu
-        self.menubar = tk.Menu(parent)
-        self.side_menu = tk.Menu(self.menubar, tearoff=0)
-        self.side_menu.add_command(label="restart", command=self.restart_game)
-        self.side_menu.add_command(label ="new game", command=self.new_game)
-        self.side_menu.add_command(label="load script", command=self.load_script)
-        self.side_menu.add_command(label="quit", command=self.quit)
-        self.menubar.add_cascade(label="Game", menu=self.side_menu)
-        self.parent.config(menu=self.menubar)
+        #self.menubar = tk.Menu(parent)
+        #self.side_menu = tk.Menu(self.menubar, tearoff=0)
+        #self.side_menu.add_command(label="restart", command=self.restart_game)
+        #self.side_menu.add_command(label ="new game", command=self.new_game)
+        #self.side_menu.add_command(label="load script", command=self.load_script)
+        #self.side_menu.add_command(label="quit", command=self.quit)
+        #self.menubar.add_cascade(label="Game", menu=self.side_menu)
+        #self.parent.config(menu=self.menubar)
         self.buttons = ["move_up", "move_down",  "move_left", "move_right",
                         "shoot_up", "shoot_down", "shoot_left", "shoot_right"]
 
@@ -287,7 +288,7 @@ class Single_agent_window:
         self.canvas.tag_raise("area")
         self.canvas.tag_raise("occupied")
         self.canvas.tag_lower("area")
-
+    '''
     def draw_manual_button(self):
         btn_file_name = ['img_src/btn_up.png', 'img_src/btn_down.png', 'img_src/btn_left.png', 'img_src/btn_right.png',
                          'img_src/btn_fire.png']
@@ -298,6 +299,16 @@ class Single_agent_window:
                                          fill="white", tags="area")
             self.images[filename] = tk.PhotoImage(file=filename)
             self.canvas.create_image(self.button_pos[i][0]+32, self.button_pos[0][1]+32, image=self.images[filename])
+    '''
+    def draw_manual_button(self):
+        btn_file_name = ['img_src/btn_right.png']
+        for i in range(len(btn_file_name)):
+            filename = btn_file_name[i]
+            self.canvas.create_rectangle(self.button_pos[i][0], self.button_pos[i][1], self.button_pos[i][2],
+                                         self.button_pos[i][3],
+                                         fill="white", tags="area")
+            self.images[filename] = tk.PhotoImage(file=filename)
+            self.canvas.create_image(self.button_pos[i][0]+32, self.button_pos[0][1]+32, image=self.images[filename])    
 
     def click_manual_button(self, x, y):
         for i in range(0,5):
@@ -324,7 +335,23 @@ class Single_agent_window:
         self.draw_pieces()
 
     def parse_button(self, g1, nextMove):
-        self.aggame.step()
+        ##self.aggame.step()
+        if nextMove == "move_up":
+            self.restart_game()
+            while not self.aggame.g.finished:
+                self.aggame.step()
+                string=""
+                for message in self.observer.messages:
+                    if message != 'CONTINUE':
+                        string+=message
+                self.info_label.config(text=string, fg='red')
+                self.draw_board()
+                self.draw_pieces()
+                self.canvas.update()
+                self.steps=self.aggame.stepcount
+                time.sleep(0.5)
+            self.checkwin()
+            
         '''
         if nextMove == "move_up":
             g1.moveRobotUp()
@@ -347,17 +374,18 @@ class Single_agent_window:
         '''
     def checkwin(self):
         for message in self.observer.messages:
-            if message=='FAIL':
-                self.draw_lose()
+           
             if message=='SUCCESS':
                 self.draw_win()
+            else:
+                self.draw_lose()
         
     def draw_pieces(self):
         self.canvas.delete("occupied")
         # self.canvas.create_image(32, 32, image=self.map_icon["LiveWumpus"],
         #                                  tags="occupied")
         x, y = self.game.robot_position[0], self.game.robot_position[1]
-        self.checkwin()
+        #self.checkwin()
         for i in range(self.rows):
             for j in range(self.columns):
                 x0 = (j * self.dim_square) + int(self.dim_square / 2)
@@ -396,13 +424,13 @@ class Single_agent_window:
 
 
     def draw_win(self):
-        self.end_pop_window("Congratuations!", "YOU KILLED WUMPUS!")
-        self.restart_game()
+        self.end_pop_window("Congratuations!", "Finished after {0} steps!".format(self.steps+1))
+        
         print("win")
 
     def draw_lose(self):
         self.end_pop_window("LOSE", "Wanna try again?")
-        self.restart_game()
+        
         print("lost")
 
     def combine_funcs(*funcs):

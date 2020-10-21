@@ -222,7 +222,7 @@ def option_menu(screen, board):
         font_size=30,
         bg_rgb=BLUE,
         text_rgb=BLACK,
-        text=f"Number of pits: ({board.diffy})",
+        text=f"Level of difficulty: ({board.diffy})",
     )
     increase_diffy = UIElement(           #increment diffy button
         center_position=(500, 130),

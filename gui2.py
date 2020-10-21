@@ -6,6 +6,8 @@ from enum import Enum
 from pygame.sprite import RenderUpdates
 from tkinter import *
 from Manual_play_window import *
+from battle import *
+from single import *
 from game import Game
 from observer import Observer
 from generatorv3 import *
@@ -339,7 +341,12 @@ def manual_play(screen, board):
     return game_loop(screen, buttons)
 def single_play(screen, board):
     #implement 1 robot version
-
+    root = Tk()
+    canvas = Canvas(root)
+    temp_new = Toplevel(canvas)
+    Single(temp_new, board)
+    root.quit()
+    root.mainloop()
 
     action=GameState.NEWGAME
     return_btn = UIElement(
@@ -363,6 +370,12 @@ def single_play(screen, board):
 
 def battle_play(screen, board):
     #implement 8 robot battle version
+    root = Tk()
+    canvas = Canvas(root)
+    temp_new = Toplevel(canvas)
+    Battle(temp_new, board)
+    root.quit()
+    root.mainloop()
     action=GameState.NEWGAME
     return_btn = UIElement(
         center_position=(400, 400),

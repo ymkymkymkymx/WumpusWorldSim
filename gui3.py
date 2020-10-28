@@ -13,6 +13,7 @@ import sys
 import os
 import win32ui
 import Single_agent_window as sagentw
+import Single_agent_window_setmap as sagentmap
 BLUE = (106, 159, 181)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -175,6 +176,8 @@ def main():
             if board.diffy > 0:
                 board.diffy -= 1
             game_state = option_menu(screen, board) 
+        if game_state==GameState.SINGLEWITHMAP:
+            game_state = single_map_play(screen, board)
         if game_state == GameState.QUIT:
             pygame.quit()
             return
@@ -341,8 +344,17 @@ def choose_game(screen,board):
         text="1 Robot Test",
         action=GameState.SINGLE,
     )
-    battle = UIElement(
+    
+    singlemap = UIElement(
         center_position=(425, 375),
+        font_size=40,
+        bg_rgb=BLUE,
+        text_rgb=WHITE,
+        text="1 Robot with map Test",
+        action=GameState.SINGLEWITHMAP,
+    )    
+    battle = UIElement(
+        center_position=(425, 450),
         font_size=40,
         bg_rgb=BLUE,
         text_rgb=WHITE,
@@ -358,7 +370,7 @@ def choose_game(screen,board):
         action=GameState.NEWGAME,
     )
 
-    buttons = RenderUpdates(manual, single, battle, return_btn)
+    buttons = RenderUpdates(manual, single,singlemap, battle, return_btn)
 
     return game_loop(screen, buttons)
 def manual_play(screen, board):
@@ -402,6 +414,50 @@ def single_play(screen, board):
     exec(cmd,glb,loc)
     agentclass=loc['t1']
     sagentw.Single_agent_window(temp_new, board,agentclass)
+    
+    root.quit()
+    root.mainloop()
+    action=GameState.NEWGAME    
+
+    return_btn = UIElement(
+        center_position=(400, 400),
+        font_size=30,
+        bg_rgb=BLUE,
+        text_rgb=WHITE,
+        text="Back",
+        action=GameState.NEWGAME,
+    )
+    quit_btn = UIElement(
+        center_position=(400, 500),
+        font_size=30,
+        bg_rgb=BLUE,
+        text_rgb=WHITE,
+        text="Quit",
+        action=GameState.QUIT,
+    )
+    buttons = RenderUpdates(return_btn, quit_btn)
+    return game_loop(screen, buttons)
+def single_map_play(screen, board):
+    #implement 1 robot version
+    root = Tk()
+    canvas = Canvas(root)
+    temp_new = Toplevel(canvas)
+    fname,agentname=selectagent()
+    print(fname)
+    print(agentname)
+    sys.path.append(fname)
+    loc = {}
+    glb={}
+    cmd="import "+agentname+" as t1"
+    exec(cmd,glb,loc)
+    agentclass=loc['t1']
+    maptxt=input("Enter the map as a list: 0=empty,1=pit,2=wumpus,3=gold\n")
+    cmd="themap="+maptxt
+    loc = {}
+    glb={} 
+    exec(cmd,glb,loc)
+    themap=loc['themap']
+    sagentmap.Single_agent_window(temp_new, board,agentclass,themap)
     
     root.quit()
     root.mainloop()
@@ -489,7 +545,7 @@ class GameState(Enum):
     BATTLE = 13
     INCREASEDIF=14
     DECREASEDIF=15
-
+    SINGLEWITHMAP=16
 
 if __name__ == "__main__":
     main()

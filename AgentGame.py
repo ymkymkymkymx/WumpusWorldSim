@@ -16,14 +16,23 @@ class AgentGame:
         self.sizey= sizey
         self.pits= pits
         self.diffy= diffy
-        self.start_invis_board = tolistofset(findmap(sizex,sizey,pits,diffy),sizex,sizey)
+        self.numberboard=findmap(self.sizex,self.sizey,self.pits,self.diffy)
+        printgrid(self.numberboard,sizex,sizey)
+        self.start_invis_board = tolistofset(self.numberboard,self.sizex,self.sizey)
         self.ob=Observer()
         self.g = Game() 
         self.g.subscribeObserver(o1)
         self.g.subscribeObserver(self.ob)
         self.g.startGame(self.start_invis_board)
         self.stepcount=0
-
+    def setboard(self,board):
+        self.sizex=len(board)
+        self.sizey=len(board[0])
+        self.numberboard=board
+        printgrid(self.numberboard,self.sizex,self.sizey)
+        self.start_invis_board=tolistofset(self.numberboard,self.sizex,self.sizey)
+        self.g.startGame(self.start_invis_board)
+        
     def step(self):
         if self.g.finished == True:
             return

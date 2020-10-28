@@ -122,15 +122,17 @@ class Single_agent_window:
     columns = 8
     dim_square = CELL_SIZE
 
-    def __init__(self, parent, data,agentclass):
+    def __init__(self, parent, data,agentclass,themap):
         self.agentclass=agentclass
-        self.rows = data.gridX
-        self.columns = data.gridY
+        self.themap=themap
+        self.rows = len(themap)
+        self.columns = len(themap[0])
         self.fire = False
         self.observer = None
         self.data = data
         self.game=None
         self.aggame = self.init_game_with_data(data)
+        
         self.steps=0
         # print(data.gridX)  #todo parse data
 
@@ -196,13 +198,11 @@ class Single_agent_window:
     def init_game_with_data(self, data):
         o1 = Observer()
         
-        sizex = data.gridX
-        sizey = data.gridY
+        sizex = self.rows
+        sizey = self.columns
         self.agent=self.agentclass.Agent(sizex,sizey)
-        pits = int(data.pits)
-        diffy = self.data.diffy
-        start_invis_board = tolistofset(findmap(sizex, sizey, pits, diffy), sizex, sizey)
-        game1=AgentGame.AgentGame(sizex,sizey,pits,diffy,self.agent,o1)
+        game1=AgentGame.AgentGame(sizex,sizey,0,0,self.agent,o1)
+        game1.setboard(self.themap)
         self.game=game1.g
         self.observer = o1
         return game1

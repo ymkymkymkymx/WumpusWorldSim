@@ -246,8 +246,11 @@ class Manual_play_window:
     def draw_board(self):
         color = self.color2
         for row in range(self.rows):
-            color = self.color1 if color == self.color2 else self.color2
+            # color = self.color1 \
+            #     if color == self.color2 else self.color2
             for col in range(self.columns):
+                color = self.color1 \
+                    if color == self.color2 else self.color2
                 x1 = (col * self.dim_square)
                 y1 = (row * self.dim_square)
                 x2 = x1 + self.dim_square
@@ -259,7 +262,8 @@ class Manual_play_window:
                 else:
                     self.canvas.create_rectangle(x1, y1, x2, y2, fill=color,
                                                  tags="area")
-                color = self.color1 if color == self.color2 else self.color2
+                # color = self.color1 \
+                #     if color == self.color2 else self.color2
         self.draw_manual_button()
 
         for name in self.pieces:
@@ -355,6 +359,8 @@ class Manual_play_window:
                         if len(self.observer.history)>0 and self.observer.history[-1] == "MISSED-WUMPUS":
                             self.canvas.create_image(x0, y0, image=self.map_icon[temp],
                                              tags="occupied")
+                        elif len(self.observer.history) > 0 and self.observer.history[-1] == "SUCCESS":
+                            self.draw_win()
                         else:
                             self.canvas.create_image(x0, y0, image=self.map_icon["LiveWumpus"],
                                                      tags="occupied")
@@ -363,10 +369,11 @@ class Manual_play_window:
                                                  tags="occupied")
 
     def check_win_with_arrow(self):
-        if self.observer.history[-1] == "MISSED-WUMPUS":
-            self.draw_lose()
+        if self.observer.history[-1] == "MISSED-WUMPUS": #if missed the shoot
+            # self.draw_lose()
+            return
         else:
-            self.draw_win()
+            self.draw_win() # no miss then win
 
     def draw_win(self):
         self.end_pop_window("Congratuations!", "YOU KILLED WUMPUS!")

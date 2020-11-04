@@ -373,8 +373,8 @@ class Manual_play_window:
             # self.draw_lose()
             return
         else:
-            self.draw_win() # no miss then win
-
+            #self.draw_win() # no miss then win
+            return
     def draw_win(self):
         self.end_pop_window("Congratuations!", "YOU KILLED WUMPUS!")
         self.restart_game()

@@ -247,9 +247,9 @@ class Single_agent_window:
 
     def get_map_icon(self):
         map_file_name = ['map_glitter.png','map_gold.png','map_pit.png',
-                         'map_smell.png','map_wind.png', 'map_wumpus.png', 'map_robot.png','btn_fire.png','map_smellwind.png']
+                         'map_smell.png','map_wind.png', 'map_wumpus.png', 'map_robot.png','btn_fire.png','map_smellwind.png','map_deadwumpus.png']
         map_key_name = ["Glitter","Gold","Pit",
-                        "Stench","Breeze","LiveWumpus", "robot", "Arrow","StenchBreeze"]
+                        "Stench","Breeze","LiveWumpus", "robot", "Arrow","StenchBreeze","DeadWumpus"]
         map_icon = {}
         for i in range(len(map_file_name)):
             map_icon[map_key_name[i]] = tk.PhotoImage(file='img_src/'+map_file_name[i])
@@ -396,30 +396,28 @@ class Single_agent_window:
         
     def draw_pieces(self):
         self.canvas.delete("occupied")
-        # self.canvas.create_image(32, 32, image=self.map_icon["LiveWumpus"],
-        #                                  tags="occupied")
         x, y = self.game.robot_position[0], self.game.robot_position[1]
-        #self.checkwin()
         for i in range(self.rows):
             for j in range(self.columns):
                 x0 = (j * self.dim_square) + int(self.dim_square / 2)
                 y0 = (i * self.dim_square) + int(self.dim_square / 2)
-                if len(self.game.visible_board[self.rows - i - 1][j]) == 0 and (self.rows - i - 1 != x or j != y):
-                    # self.canvas.create_image(32, 32, image=self.map_icon["LiveWumpus"],
-                    #                                  tags="occupied")
+                for temp in self.game.invisible_board[self.rows - i - 1][j]:
+                    if temp == "LiveWumpus":
+                        self.canvas.create_image(x0, y0, image=self.map_icon["LiveWumpus"],
+                                                    tags="occupied")
+                    if temp =="Pit":
+                        self.canvas.create_image(x0, y0, image=self.map_icon["Pit"],
+                                                    tags="occupied")
+                    if temp == "Gold":
+                        self.canvas.create_image(x0, y0, image=self.map_icon["Gold"],
+                                                    tags="occupied")
+                if len(self.game.visible_board[self.rows - i - 1][j]) == 0 :
                     pass
-                elif not (self.rows - i - 1 != x or j != y):
-                    self.canvas.create_image(x0,y0, image=self.map_icon["robot"],
-                                                 tags="occupied")
+                
                 else:
                     temp = self.game.visible_board[self.rows - i - 1][j].difference({}).pop()
                     if temp == "Arrow" or temp == 'DeadWumpus':
-                        
-                        if len(self.observer.history)>0 and self.observer.history[-1] == "MISSED-WUMPUS":
-                            self.canvas.create_image(x0, y0, image=self.map_icon[temp],
-                                             tags="occupied")
-                        else:
-                            self.canvas.create_image(x0, y0, image=self.map_icon["LiveWumpus"],
+                        self.canvas.create_image(x0, y0, image=self.map_icon["DeadWumpus"],
                                                      tags="occupied")
                     else:
                         brz=False
@@ -435,6 +433,9 @@ class Single_agent_window:
                         else:
                             self.canvas.create_image(x0, y0, image=self.map_icon[temp],
                                                  tags="occupied")
+                if not (self.rows - i - 1 != x or j != y):
+                    self.canvas.create_image(x0,y0, image=self.map_icon["robot"],
+                                                         tags="occupied")
 
 
     def draw_win(self):

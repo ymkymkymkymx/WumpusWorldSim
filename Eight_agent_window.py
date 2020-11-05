@@ -129,7 +129,7 @@ class Single_agent_window:
         self.fire = False
         self.observer = None
         self.data = data
-        self.game=None
+        self.game=[]
         self.aggame = self.init_game_with_data(data)
         self.steps=0
         # print(data.gridX)  #todo parse data
@@ -194,18 +194,20 @@ class Single_agent_window:
             time.sleep(0.5)
     '''
     def init_game_with_data(self, data):
-        o1 = Observer()
-        
-        sizex = data.gridX
-        sizey = data.gridY
-        self.agent=self.agentclass.Agent(sizex,sizey)
-        pits = int(data.pits)
-        diffy = self.data.diffy
-        start_invis_board = tolistofset(findmap(sizex, sizey, pits, diffy), sizex, sizey)
-        game1=AgentGame.AgentGame(sizex,sizey,pits,diffy,self.agent,o1)
-        self.game=game1.g
-        self.observer = o1
-        return game1
+        games=[]
+        for aclass in self.agentclass:
+            o1 = Observer()
+            
+            sizex = data.gridX
+            sizey = data.gridY
+            agent=aclass.Agent(sizex,sizey)
+            pits = int(data.pits)
+            diffy = self.data.diffy
+            start_invis_board = tolistofset(findmap(sizex, sizey, pits, diffy), sizex, sizey)
+            game1=AgentGame.AgentGame(sizex,sizey,pits,diffy,agent,o1)
+            self.game.append(game1.g)
+            games.append(game1)
+        return games
 
     def num_difficulty(self, difficulty):
         if difficulty == "EASY":
@@ -240,10 +242,11 @@ class Single_agent_window:
 
         if event.y > self.dim_square*self.rows:
             self.click_manual_button(event.x, event.y)
-
+            '''
             self.info_label["text"] = self.observer.history
             if self.observer.Fail:
                 self.draw_lose()
+            '''
 
     def get_map_icon(self):
         map_file_name = ['map_glitter.png','map_gold.png','map_pit.png',
@@ -255,14 +258,25 @@ class Single_agent_window:
             map_icon[map_key_name[i]] = tk.PhotoImage(file='img_src/'+map_file_name[i])
         return map_icon
 
-
     def draw_board(self):
+        one_board_width = (self.columns * self.dim_square)
+        one_board_height = (self.rows + 1.5) * self.dim_square
+        start_x = start_y = 0
+        for i in range(8):
+            if i == 4:
+                start_x = 0
+                start_y += one_board_height + 200
+            self.draw_board_helper(start_x, start_y)
+            start_x += one_board_width + 50 #gap 
+        self.draw_manual_button()
+    def draw_board_helper(self, start_x, start_y):
         color = self.color2
+
         for row in range(self.rows):
             color = self.color1 if color == self.color2 else self.color2
             for col in range(self.columns):
-                x1 = (col * self.dim_square)
-                y1 = (row * self.dim_square)
+                x1 = (col * self.dim_square + start_x)
+                y1 = (row * self.dim_square + start_y)
                 x2 = x1 + self.dim_square
                 y2 = y1 + self.dim_square
                 if (self.focused is not None and (row, col) in self.focused):
@@ -273,7 +287,7 @@ class Single_agent_window:
                     self.canvas.create_rectangle(x1, y1, x2, y2, fill=color,
                                                  tags="area")
                 color = self.color1 if color == self.color2 else self.color2
-        self.draw_manual_button()
+        # self.draw_manual_button()
 
         for name in self.pieces:
             self.pieces[name] = (self.pieces[name][0], self.pieces[name][1])
@@ -325,45 +339,46 @@ class Single_agent_window:
                                                  image=self.images['img_src/btn_fire.png'])
                 else:
                     if self.fire:
-                        self.parse_button(self.game, self.buttons[i + 4])
+                        self.parse_button( self.buttons[i + 4])
                         self.fire = not self.fire
                         print("press fire", self.buttons[i + 4])
                     else:
                         print(self.buttons[i] + " pressed")
-                        self.parse_button(self.game, self.buttons[i])
+                        self.parse_button( self.buttons[i])
 
         self.draw_pieces()
 
-    def parse_button(self, g1, nextMove):
+    def parse_button(self, nextMove):
         ##self.aggame.step()
         if nextMove == "move_up":
-            while not self.aggame.g.finished:
-                self.aggame.step()
-                string=""
-                for message in self.observer.messages:
-                    if message != 'CONTINUE':
-                        string+=message
-                self.info_label.config(text=string, fg='red')
+            f=False
+            while not f:
+                for aggmame in self.aggame:            
+                    if not aggame.g.finished:
+                        aggame.step()
+                f=True
+                for g in self.game:
+                    f=f and g.finished
+                
                 self.draw_board()
                 self.draw_pieces()
                 self.canvas.update()
-                self.steps=self.aggame.stepcount
+                self.steps+=1
                 time.sleep(0.5)
             self.checkwin()
         elif nextMove == "move_down":
-            if not self.aggame.g.finished:
-                self.aggame.step()
-                string=""
-                for message in self.observer.messages:
-                    if message != 'CONTINUE':
-                        string+=message
-                self.info_label.config(text=string, fg='red')
-                self.draw_board()
-                self.draw_pieces()
-                self.canvas.update()
-                self.steps=self.aggame.stepcount
-                
-            if self.aggame.g.finished:
+            for aggmame in self.aggame:            
+                if not aggame.g.finished:
+                    aggame.step()
+                    
+            self.draw_board()
+            self.draw_pieces()
+            self.canvas.update()
+            self.steps+=1
+            f=True
+            for g in self.game:
+                f=f and g.finished
+            if f:                
                 self.checkwin()            
             
         '''
@@ -387,21 +402,24 @@ class Single_agent_window:
             return InvalidMove
         '''
     def checkwin(self):
-        for message in self.observer.messages:
-           
-            if message=='SUCCESS':
-                self.draw_win()
-            else:
-                self.draw_lose()
-        
+        f=True
+        for g in self.game:
+            f=f and g.finished
+        if f:
+            a=input("finished")
+            self.draw_win()
+            
     def draw_pieces(self):
+        for i in range(8):
+            print()
+    def draw_pieces_helper(self,inix,iniy,thegame):
         self.canvas.delete("occupied")
-        x, y = self.game.robot_position[0], self.game.robot_position[1]
+        x, y = thegame.robot_position[0], thegame.robot_position[1]
         for i in range(self.rows):
             for j in range(self.columns):
-                x0 = (j * self.dim_square) + int(self.dim_square / 2)
-                y0 = (i * self.dim_square) + int(self.dim_square / 2)
-                for temp in self.game.invisible_board[self.rows - i - 1][j]:
+                x0 = (j * self.dim_square) + int(self.dim_square / 2)+inix
+                y0 = (i * self.dim_square) + int(self.dim_square / 2)+iniy
+                for temp in thegame.invisible_board[self.rows - i - 1][j]:
                     if temp == "LiveWumpus":
                         self.canvas.create_image(x0, y0, image=self.map_icon["LiveWumpus"],
                                                     tags="occupied")
@@ -411,18 +429,18 @@ class Single_agent_window:
                     if temp == "Gold":
                         self.canvas.create_image(x0, y0, image=self.map_icon["Gold"],
                                                     tags="occupied")
-                if len(self.game.visible_board[self.rows - i - 1][j]) == 0 :
+                if len(thegame.visible_board[self.rows - i - 1][j]) == 0 :
                     pass
                 
                 else:
-                    temp = self.game.visible_board[self.rows - i - 1][j].difference({}).pop()
+                    temp = thegame.visible_board[self.rows - i - 1][j].difference({}).pop()
                     if temp == "Arrow" or temp == 'DeadWumpus':
                         self.canvas.create_image(x0, y0, image=self.map_icon["DeadWumpus"],
                                                      tags="occupied")
                     else:
                         brz=False
                         stc=False
-                        for msg in self.game.visible_board[self.rows - i - 1][j]:
+                        for msg in thegame.visible_board[self.rows - i - 1][j]:
                             if msg =="Stench":
                                 stc=True
                             if msg=="Breeze":

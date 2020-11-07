@@ -25,6 +25,7 @@ class AgentGame:
         self.g.subscribeObserver(self.ob)
         self.g.startGame(self.start_invis_board)
         self.stepcount=0
+        self.win=False
     def setboard(self,board):
         self.sizex=len(board)
         self.sizey=len(board[0])
@@ -62,6 +63,7 @@ class AgentGame:
         except Exception as e:
             print(e)
             print("Robot ran out of time")
+            self.g.finished=True
             nextMove=''
 
         if nextMove == "move_up":
@@ -84,7 +86,9 @@ class AgentGame:
             g1.shootArrowLeft() 
         else:
             print("INVALID MOVE")
-            
+        for msg in self.o1.messages:
+            if msg=="SUCCESS":
+                self.win=True
         self.stepcount+=1
         return 
 

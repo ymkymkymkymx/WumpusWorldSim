@@ -14,6 +14,7 @@ import os
 import win32ui
 import Single_agent_window as sagentw
 import Single_agent_window_setmap as sagentmap
+import Eight_agent_window as eight
 BLUE = (106, 159, 181)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -484,6 +485,32 @@ def single_map_play(screen, board):
 
 def battle_play(screen, board):
     #implement 8 robot battle version
+    root = Tk()
+    canvas = Canvas(root)
+    temp_new = Toplevel(canvas)
+    agentclasses=[]
+    for i in range(8):
+        
+        fname,agentname=selectagent()
+        print(fname)
+        print(agentname)
+        sys.path.append(fname)
+        loc = {}
+        glb={}
+        cmd="import "+agentname+" as t1"
+        exec(cmd,glb,loc)
+        agentclass=loc['t1']
+        agentclasses.append(agentclass)
+    maptxt=input("Enter the map as a list: 0=empty,1=pit,2=wumpus,3=gold\n")
+    cmd="themap="+maptxt
+    loc = {}
+    glb={} 
+    exec(cmd,glb,loc)
+    themap=loc['themap']
+    eight.Single_agent_window(temp_new, board,agentclasses,themap)
+    
+    root.quit()
+    root.mainloop()    
     action=GameState.NEWGAME
     return_btn = UIElement(
         center_position=(400, 400),

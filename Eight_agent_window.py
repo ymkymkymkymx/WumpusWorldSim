@@ -122,10 +122,11 @@ class Single_agent_window:
     columns = 8
     dim_square = CELL_SIZE
 
-    def __init__(self, parent, data,agentclass):
+    def __init__(self, parent, data,agentclass,themap):
         self.agentclass=agentclass
-        self.rows = data.gridX
-        self.columns = data.gridY
+        self.themap=themap
+        self.rows = len(themap)
+        self.columns = len(themap[0])
         self.fire = False
         self.observer = None
         self.data = data
@@ -159,11 +160,12 @@ class Single_agent_window:
         self.info_label.pack(side=tk.RIGHT, padx=8, pady=5)
         self.btmfrm.pack(fill="x", side=tk.BOTTOM)
 
-        canvas_width = (self.columns) * self.dim_square
-        canvas_height = (self.rows + 1.5) * self.dim_square
+        canvas_width = (self.columns) * self.dim_square * 4
+        canvas_height = (self.rows + 1.5) * self.dim_square * 3
+        gap_size = 30
         gap_size = 30
         if self.columns < 7:
-            canvas_width = 6 * self.dim_square
+            canvas_width = 6 * self.dim_square * 5
             gap_size = 10
         self.canvas = tk.Canvas(parent, width=canvas_width,
                                 height=canvas_height)
@@ -195,16 +197,17 @@ class Single_agent_window:
     '''
     def init_game_with_data(self, data):
         games=[]
+        self.game=[]
         for aclass in self.agentclass:
             o1 = Observer()
             
-            sizex = data.gridX
-            sizey = data.gridY
+            sizex = self.rows
+            sizey = self.columns
             agent=aclass.Agent(sizex,sizey)
             pits = int(data.pits)
             diffy = self.data.diffy
-            start_invis_board = tolistofset(findmap(sizex, sizey, pits, diffy), sizex, sizey)
             game1=AgentGame.AgentGame(sizex,sizey,pits,diffy,agent,o1)
+            game1.setboard(self.themap)
             self.game.append(game1.g)
             games.append(game1)
         return games
@@ -259,15 +262,16 @@ class Single_agent_window:
         return map_icon
 
     def draw_board(self):
+        self.canvas.delete("occupied")
         one_board_width = (self.columns * self.dim_square)
         one_board_height = (self.rows + 1.5) * self.dim_square
         start_x = start_y = 0
         for i in range(8):
             if i == 4:
                 start_x = 0
-                start_y += one_board_height + 200
+                start_y += one_board_height + 25
             self.draw_board_helper(start_x, start_y)
-            start_x += one_board_width + 50 #gap 
+            start_x += one_board_width + 25 #gap 
         self.draw_manual_button()
     def draw_board_helper(self, start_x, start_y):
         color = self.color2
@@ -352,8 +356,9 @@ class Single_agent_window:
         ##self.aggame.step()
         if nextMove == "move_up":
             f=False
-            while not f:
-                for aggmame in self.aggame:            
+            count=0
+            while not f and count<1000:
+                for aggame in self.aggame:            
                     if not aggame.g.finished:
                         aggame.step()
                 f=True
@@ -365,9 +370,10 @@ class Single_agent_window:
                 self.canvas.update()
                 self.steps+=1
                 time.sleep(0.5)
+                count+=1
             self.checkwin()
         elif nextMove == "move_down":
-            for aggmame in self.aggame:            
+            for aggame in self.aggame:            
                 if not aggame.g.finished:
                     aggame.step()
                     
@@ -406,14 +412,26 @@ class Single_agent_window:
         for g in self.game:
             f=f and g.finished
         if f:
+            for i in range(8):
+                if self.aggame[i].win:
+                    print("Agent {0:} win with {1:} steps".format(i+1,self.aggame[i].stepcount))
+                else:
+                    print("Agent {0:} lose".format(i+1))
             a=input("finished")
             self.draw_win()
             
     def draw_pieces(self):
+        one_board_width = (self.columns * self.dim_square)
+        one_board_height = (self.rows + 1.5) * self.dim_square
+        start_x = start_y = 0        
         for i in range(8):
-            print()
+            if i == 4:
+                start_x = 0
+                start_y += one_board_height + 25
+            self.draw_pieces_helper(start_x,start_y,self.game[i])
+            start_x += one_board_width + 25 #gap 
     def draw_pieces_helper(self,inix,iniy,thegame):
-        self.canvas.delete("occupied")
+        
         x, y = thegame.robot_position[0], thegame.robot_position[1]
         for i in range(self.rows):
             for j in range(self.columns):

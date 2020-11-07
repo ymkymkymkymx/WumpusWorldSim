@@ -1,3 +1,3 @@
 from generatorv3 import *
 
-printgrid(findmap(3,3,2,3),3,3)
+print(findmap(4,4,2,3))

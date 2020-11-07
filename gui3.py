@@ -7,7 +7,6 @@ from pygame.sprite import RenderUpdates
 from tkinter import *
 from Manual_play_window import *
 from game import Game
-from observer import Observer
 from generatorv3 import *
 import sys
 import os

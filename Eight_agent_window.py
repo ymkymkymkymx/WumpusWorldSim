@@ -1,7 +1,7 @@
 import tkinter as tk
 from copy import deepcopy
 from game import Game
-from observer import Observer
+from observer0 import Observer
 from generatorv3 import *
 import AgentGame
 import time

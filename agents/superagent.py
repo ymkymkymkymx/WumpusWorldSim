@@ -1,5 +1,6 @@
 from collections import deque
 from nodeclass import  *
+import time
 class Agent:
     def __init__(self,sizex,sizey):
         ##TODO: Put the variables you need for your agents here.
@@ -251,6 +252,7 @@ class Agent:
     """
     def move(self,state):
         ##TODO: Implement your algorithm here
+        time.sleep(1)
         if len(self.nextmoves)!=0:
             return self.nextmoves.popleft()
         if len(self.board)==0:

@@ -10,7 +10,7 @@ class Agent:
         self.sizey=sizey
         self.x=0
         self.y=0
-        
+        self.hasgold=False
     ##TODO: define the functions you need here
     def createboard(self):
         themap=list(list())
@@ -84,7 +84,8 @@ class Agent:
                 gamestate[i][j].breeze=True
             if message=="GLITTER":
                 gamestate[i][j].glitter=True
-                
+            if message=="GOLD":
+                self.hasgold=True
         if (gamestate[i][j].breeze and gamestate[i][j].stench):
             for x in range(mapsizex):
                 for y in range(mapsizey):
@@ -252,7 +253,7 @@ class Agent:
     """
     def move(self,state):
         ##TODO: Implement your algorithm here
-        time.sleep(1)
+        #time.sleep(1)
         if len(self.nextmoves)!=0:
             return self.nextmoves.popleft()
         if len(self.board)==0:
@@ -264,7 +265,7 @@ class Agent:
             self.itshighnoon()
             return self.nextmoves.popleft()
         
-        if self.checkgold():
+        if self.checkgold() or self.hasgold:
             self.tovictory()
             return self.nextmoves.popleft()        
         

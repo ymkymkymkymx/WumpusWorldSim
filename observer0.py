@@ -10,11 +10,14 @@ class Observer:
         self.hasArrow=hasArrow
         self.hasGold=hasGold
         self.orientation=orientation
-        """function(visible_board, robot_position, messages, hasArrow, hasGold) -> void"""
+        """
+        function(visible_board, robot_position, messages, hasArrow, hasGold) -> void
+        """
 
 
         """
             
+
             This is the data that the controller provides to the front-end. 
 
             visible_board : [n*[m*set()]] where each set any of the following strings: 

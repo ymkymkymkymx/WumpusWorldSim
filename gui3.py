@@ -534,6 +534,7 @@ def battle_play(screen, board):
 def game_loop(screen, buttons):
     """ Handles game loop until an action is return by a button in the
         buttons sprite renderer.
+        
     """
     while True:
         mouse_up = False

@@ -366,26 +366,7 @@ class Single_agent_window:
             if self.aggame.g.finished:
                 self.checkwin()            
             
-        '''
-        if nextMove == "move_up":
-            g1.moveRobotUp()
-        elif nextMove == "move_down":
-            g1.moveRobotDown()
-        elif nextMove == "move_left":
-            g1.moveRobotLeft()
-        elif nextMove == "move_right":
-            g1.moveRobotRight()
-        elif nextMove == "shoot_up":
-            g1.shootArrowUp()
-        elif nextMove == "shoot_down":
-            g1.shootArrowDown()
-        elif nextMove == "shoot_right":
-            g1.shootArrowRight()
-        elif nextMove == "shoot_left":
-            g1.shootArrowLeft()
-        else:
-            return InvalidMove
-        '''
+       
     def checkwin(self):
         for message in self.observer.messages:
            

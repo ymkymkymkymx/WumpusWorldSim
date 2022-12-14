@@ -306,18 +306,7 @@ class Single_agent_window:
         self.canvas.tag_raise("area")
         self.canvas.tag_raise("occupied")
         self.canvas.tag_lower("area")
-    '''
-    def draw_manual_button(self):
-        btn_file_name = ['img_src/btn_up.png', 'img_src/btn_down.png', 'img_src/btn_left.png', 'img_src/btn_right.png',
-                         'img_src/btn_fire.png']
-        for i in range(0, 5):
-            filename = btn_file_name[i]
-            self.canvas.create_rectangle(self.button_pos[i][0], self.button_pos[i][1], self.button_pos[i][2],
-                                         self.button_pos[i][3],
-                                         fill="white", tags="area")
-            self.images[filename] = tk.PhotoImage(file=filename)
-            self.canvas.create_image(self.button_pos[i][0]+32, self.button_pos[0][1]+32, image=self.images[filename])
-    '''
+    
     def draw_manual_button(self):
         btn_file_name = ['img_src/btn_right.png','img_src/btn_fire.png']
         for i in range(len(btn_file_name)):
@@ -387,26 +376,7 @@ class Single_agent_window:
             if f:                
                 self.checkwin()            
             
-        '''
-        if nextMove == "move_up":
-            g1.moveRobotUp()
-        elif nextMove == "move_down":
-            g1.moveRobotDown()
-        elif nextMove == "move_left":
-            g1.moveRobotLeft()
-        elif nextMove == "move_right":
-            g1.moveRobotRight()
-        elif nextMove == "shoot_up":
-            g1.shootArrowUp()
-        elif nextMove == "shoot_down":
-            g1.shootArrowDown()
-        elif nextMove == "shoot_right":
-            g1.shootArrowRight()
-        elif nextMove == "shoot_left":
-            g1.shootArrowLeft()
-        else:
-            return InvalidMove
-        '''
+        
     def checkwin(self):
         f=True
         for g in self.game:

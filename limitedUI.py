@@ -16,6 +16,7 @@ temp_new = Toplevel(canvas)
 fname="agents"
 agentname=input("Enter the agent name: ") ## test case in this repo: agent1 or agent (please remove .py)
 sys.path.append(fname)
+
 cmd="import "+agentname+" as agentclass"
 exec(cmd)
 maptxt=input("Enter the map as a list: 0=empty,1=pit,2=wumpus,3=gold\n")

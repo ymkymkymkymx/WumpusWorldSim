@@ -1,6 +1,7 @@
 from observer0 import Observer
 from AgentGame import *
 import sys
+
 fname="agents"
 agentname=input("Enter the agent name: ") ## test case in this repo: agent1 or agent (please remove .py)
 sys.path.append(fname)
